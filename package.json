@@ -15,5 +15,9 @@
   "license": "",
   "peerDependencies": {
     "react-native": "^0.60.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/tanlm1996/react-native-plivo.git"
   }
 }
