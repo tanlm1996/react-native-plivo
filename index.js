@@ -1,10 +1,5 @@
+import EndPoint from "./src/EndPoint";
 
-import { NativeModules } from 'react-native';
+const Plivo = new EndPoint();
 
-const { RNReactNativePlivo } = NativeModules;
-
-if (!RNReactNativePlivo && __DEV__) {
-    console.warn("react-native-plivo module is not correctly linked")
-}
-
-export default RNReactNativePlivo;
+export default Plivo;
