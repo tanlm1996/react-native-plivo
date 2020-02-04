@@ -125,8 +125,12 @@ class EndPoint {
     RNReactNativePlivo.call(phoneNumber);
   }
 
-  login(username, password) {
-    RNReactNativePlivo.login(username, password);
+  callH(phoneNumber, headers) {
+    RNReactNativePlivo.callH(phoneNumber, headers);
+  }
+
+  login(username, password, fcmToken, certificateId) {
+    RNReactNativePlivo.login(username, password, fcmToken, certificateId);
 
   }
   logout() {

@@ -13,6 +13,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.plivo.endpoint.Endpoint;
@@ -62,6 +63,17 @@ public class RNReactNativePlivoModule extends ReactContextBaseJavaModule impleme
     }
 
     @ReactMethod
+    public void login(String username, String password, String fcmToken) {
+      boolean ketqua = endpoint.login(username, password, fcmToken);
+    }
+
+    @ReactMethod
+    public void login(String username, String password, String fcmToken, String certificateId) {
+
+      boolean ketqua = endpoint.login(username, password, fcmToken, certificateId);
+    }
+
+    @ReactMethod
     public void logout() {
         endpoint.logout();
     }
@@ -74,8 +86,17 @@ public class RNReactNativePlivoModule extends ReactContextBaseJavaModule impleme
         Log.i("CALL", String.valueOf(resultCall));
     }
 
-    /**
-     * For incoming only
+    @ReactMethod
+    public void callH(String phoneNumber, ReadableMap headers) {
+      Map<String, String> extraHeaders = new HashMap<>();
+      extraHeaders.put("X-PH-destNumber", headers.getString("destNumber"));
+
+      Outgoing outgoing = endpoint.createOutgoingCall();
+      outgoing.callH(phoneNumber, extraHeaders);
+    }
+
+  /**
+   * For incoming only
      *
      * @param callUUID Identity of call
      *                 Answer a call
@@ -192,7 +213,12 @@ public class RNReactNativePlivoModule extends ReactContextBaseJavaModule impleme
         sendEvent(reactContext, "Plivo-onIncomingCallRejected", params);
     }
 
-    @Override
+  @Override
+  public void onIncomingCallInvalid(Incoming incoming) {
+
+  }
+
+  @Override
     public void onOutgoingCall(Outgoing outgoing) {
         outgoingMap.put(outgoing.getCallId(), outgoing);
         WritableMap params = Arguments.createMap();
@@ -231,4 +257,9 @@ public class RNReactNativePlivoModule extends ReactContextBaseJavaModule impleme
         params.putString("callUUID", outgoing.getCallId());
         sendEvent(reactContext, "Plivo-onOutgoingCallInvalid", params);
     }
+
+  @Override
+  public void mediaMetrics(HashMap hashMap) {
+
+  }
 }
